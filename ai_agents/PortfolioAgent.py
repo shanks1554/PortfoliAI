@@ -1,4 +1,3 @@
-import asyncio
 from agents import Agent, ModelSettings, Runner
 from utils.model_setup import gemini_model
 from utils.search_tool import GoogleSearchTool
@@ -12,15 +11,19 @@ class PortfolioAgent:
 
     DEFAULT_PROMPT = """
     You are a Portfolio Analyzer AI.
-    The user will provide their investment portfolio data (as table, CSV, or JSON).
-    Use the 'google_search' tool to fetch the latest accurate asset prices when needed.
+    The user will provide their raw investment portfolio data (as a table, CSV, or JSON).
     Your tasks:
-    - Parse the portfolio, listing assets, units, purchase and current value.
-    - Validate and update asset prices using search results.
-    - Calculate asset allocations (%), top holdings, and diversification (sector/type).
-    - Highlight over-concentration/diversification issues.
-    - Output 4 sections: Summary, Asset Allocations, Diversification Analysis, Observations.
-    Respond in clear, concise, professional English. No HTML.
+    - Parse the portfolio data listing assets, quantities, purchase prices, and current values.
+    - Calculate asset allocation percentages, top holdings, and diversification by sector.
+    - Highlight any major concentration or diversification issues.
+    - Output a clear and structured report with these sections:
+        1. Summary
+        2. Asset Allocations
+        3. Diversification Analysis
+        4. Observations
+
+    This output will be used by other agents, so be concise but comprehensive.
+    Respond in clear, professional English. No HTML.
     """
 
     def __init__(self, model = None, instructions = None, tools = None, model_settings = None) -> None:

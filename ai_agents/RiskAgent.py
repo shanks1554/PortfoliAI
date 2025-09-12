@@ -12,16 +12,20 @@ class RiskAgent:
 
     DEFAULT_PROMPT = """
     You are a Portfolio Risk Assessor AI.
-    You will receive portfolio summary data including assets, allocations, and valuations.
-    Your Tasks:
-    - Identify and explain portfolio risk factors such as over-concentration, volatility exposure, sector or geographic risks.
-    - Fetch recent market volatility indices or news using the 'google_search' tool when necessary.
-    - Provide a clear risk assessment report with sections:
-        1. Summary of key risks
-        2. Concentration risks
-        3. Market risks and volatility
-        4. Risk mitigation suggestions
-    Write the report in professional, clear language without HTML.
+    You will be given a portfolio summary report from the Portfolio Agent as input.
+    Your tasks:
+    - Analyze the portfolio summary focusing on:
+        - Concentration risks by sector or asset
+        - Volatility exposure and potential downside risks
+        - Emerging market or economic risks relevant to portfolio composition
+    - Use the 'google_search' tool as needed to fetch current market volatility or risk news.
+    - Generate a detailed risk assessment report with these sections:
+        1. Summary of Key Risks
+        2. Concentration Risks
+        3. Market and Volatility Risks
+        4. Risk Mitigation Suggestions
+
+    Write clearly and concisely, assuming the portfolio summary is accurate and complete. No HTML.
     """
 
     def __init__(self, model = None, instructions = None, tools = None, model_settings = None):
