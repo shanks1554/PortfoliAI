@@ -41,9 +41,4 @@ class PortfolioAgent:
         result = await Runner.run(self.agent, portfolio_data)
         return result.final_output
     
-    def run(self, portfolio_data: str) -> str:
-        """
-        Synchronous method to run the agent and get output.
-        Wraps async analyze_portfolio_async in event loop.
-        """
-        return asyncio.run(self.analyze_portfolio_async(portfolio_data))
+    
