@@ -2,3 +2,7 @@ openai
 openai-agents
 langgraph
 python-dotenv
+pandas
+pdfplumber
+tabulate
+streamlit
