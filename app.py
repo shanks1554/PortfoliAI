@@ -7,69 +7,53 @@ from utils.input_converter import InputConverter
 manager = PortfolioWorkflow()
 converter = InputConverter()
 
-st.set_page_config(page_title="Portfolio AI Assistant", layout="wide")
-st.title("📊 PortfoliAI Assistant")
+# === Page Config ===
+st.set_page_config(
+    page_title="PortfoliAI",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-st.markdown("""
-Upload your **portfolio CSV or PDF file**. 
-The system will analyze your portfolio, assess risks, perform research, and generate recommendations.
+# === Sidebar ===
+st.sidebar.image("logo.png", width=150)
+st.sidebar.title("PortfoliAI")
+st.sidebar.markdown("""
+Welcome to **PortfoliAI**, your AI-powered portfolio assistant.  
+Upload a CSV or PDF of your portfolio to analyze it, assess risks, and get recommendations.
 """)
+st.sidebar.markdown("---")
+st.sidebar.markdown("Made with ❤️ using Streamlit & AI Agents")
+
+# === Main Title ===
+st.title("📊 PortfoliAI: AI Portfolio Assistant")
 
 # File uploader
-uploaded_file = st.file_uploader("Upload your Portfolio (CSV or PDF)", type=["csv", "pdf"])
+uploaded_file = st.file_uploader("Upload your Portfolio File (CSV / PDF)", type=["csv", "pdf"])
 
 if uploaded_file:
-    # Save file temporarily
-    with tempfile.NamedTemporaryFile(delete=False, suffix=f".{uploaded_file.name.split('.')[-1]}") as tmp:
-        tmp.write(uploaded_file.getvalue())
-        tmp_path = tmp.name
+    if uploaded_file:
+        # Save file temporarily
+        with tempfile.NamedTemporaryFile(delete=False, suffix=f".{uploaded_file.name.split('.')[-1]}") as tmp:
+            tmp.write(uploaded_file.getvalue())
+            tmp_path = tmp.name
 
-    # Convert the file into Markdown / table text
-    try:
-        portfolio_data = converter.convert(tmp_path)
-    except Exception as e:
-        st.error(f"Error converting file: {e}")
-        st.stop()
+        # Convert the file into Markdown / table text
+        try:
+            portfolio_data = converter.convert(tmp_path)
+            st.success("✅ File converted successfully!")
+        except Exception as e:
+            st.error(f"Error converting file: {e}")
+            st.stop()
 
-    st.success("✅ File converted successfully!")
-
-    # Run the workflow (sync wrapper)
-    with st.spinner("Analyzing portfolio..."):
+    # Run the workflow
+    with st.spinner("Analyzing portfolio with AI agents..."):
         results = manager.run_sync(portfolio_data)
 
-    # Display results in tabs
-    tabs = st.tabs([
-        "📈 Portfolio Analysis",
-        "⚠️ Risks",
-        "🔍 Research",
-        "🔎 Risk Research",
-        "✅ Recommendations"
-    ])
+    # Display results in **expanders** with nice markdown styling
+    for section, value in results.items():
+        with st.expander(section, expanded=True):
+            st.markdown(value if value else "No data available")
 
-    with tabs[0]:
-        st.markdown(results["Portfolio Analysis"])
-
-    with tabs[1]:
-        st.markdown(results["Portfolio Risk"])
-
-    with tabs[2]:
-        st.markdown(results["Portfolio Research"])
-
-    with tabs[3]:
-        st.markdown(results["Risk Research"])
-
-    with tabs[4]:
-        st.markdown(results["Recommendation"])
-
-    # Optional: allow user to download results as text file
-    if st.button("💾 Download All Results"):
-        output_text = ""
-        for section, value in results.items():
-            output_text += f"--- {section} ---\n{value}\n\n"
-
-        st.download_button(
-            label="Download Results",
-            data=output_text,
-            file_name="portfolio_analysis.txt",
-            mime="text/plain"
-        )
+# Footer
+st.markdown("---")
+st.markdown("**PortfoliAI** - AI-powered portfolio assistant. Made with ❤️ by Deep Nagpal")
