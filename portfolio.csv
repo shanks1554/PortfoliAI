@@ -1,0 +1,6 @@
+Ticker,Quantity,Sector,Close,Weight
+AAPL,100,Technology,170.50,15.2%
+MSFT,75,Technology,415.75,12.5%
+JPM,50,Financial,195.10,5.8%
+TSLA,20,Automotive,250.25,4.7%
+XOM,30,Energy,110.40,3.1%

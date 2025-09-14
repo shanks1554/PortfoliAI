@@ -99,6 +99,10 @@ class PortfolioWorkflow:
         }
         return results
 
+    # ✅ Sync wrapper for Streamlit or normal Python
+    def run_sync(self, portfolio_data: str):
+        return asyncio.run(self.run(portfolio_data))
+
 
 # === CLI Entry Point ===
 async def main():
